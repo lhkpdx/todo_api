@@ -1,9 +1,5 @@
 Rails.application.routes.draw do
-  get 'items/create'
 
-  get 'lists/create'
-
-  get 'users/index'
 
   namespace :api do
   get 'user/index'
@@ -21,7 +17,7 @@ Rails.application.routes.draw do
     end
 
     resources :lists, only: [] do
-      resources :items, only: [:create]
+      resources :items, only: [:create, :update]
     end
 
     resources :items, only: [:destroy]

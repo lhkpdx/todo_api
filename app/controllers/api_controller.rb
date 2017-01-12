@@ -11,17 +11,9 @@ class ApiController < ApplicationController
        @current_user ||= User.find(session[:user_id]) if session[:user_id]
      end
 
-     def permission_denied_error
-       error(403, 'Permission Denied!')
+     rescue_from StandardError do |exception|
+       render json: { :error => exception.message }, :status => 500
      end
 
-     def error(status, message = 'Something went wrong')
-       response = {
-         response_type: "ERROR",
-         message: message
-       }
-
-       render json: response.to_json, status: status
-     end
-
+     
  end

@@ -1,14 +1,26 @@
 class Api::ListsController < ApiController
   before_action :authenticated?
 
-    def create
+     def create
+       puts JSON.pretty_generate params
        user = User.find(params[:user_id])
        list = user.lists.build(list_params)
        if list.save
           render json: list
-         else
+       else
+          puts JSON.pretty_generate errors
           render json: { errors: list.errors.full_messages }, status: :unprocessable_entity
-         end
+       end
+     end
+
+     def update
+       puts JSON.pretty_generate params
+       list = List.find(params[:id])
+       if list.update(list_params)
+         render json: list
+       else
+         render :json => { :errors => list.errors.full_messages }
+       end
      end
 
      def destroy
@@ -24,7 +36,7 @@ class Api::ListsController < ApiController
      private
 
      def list_params
-        params.require(:list).permit(:title)
+        params.require(:list).permit(:title, :permission)
      end
 
 end

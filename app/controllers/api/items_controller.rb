@@ -12,6 +12,16 @@ class Api::ItemsController < ApiController
      end
    end
 
+   def update
+     puts JSON.pretty_generate params
+     item = Item.find(params[:id])
+     if item.update(item_params)
+       render json: item
+     else
+       render :json => { :errors => list.errors.full_messages }
+     end
+   end
+
    def destroy
      begin
        item = Item.find(params[:id])
